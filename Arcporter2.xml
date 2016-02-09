@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Component
+        xmlns="http://www.red5studios.com/"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.red5studios.com/ ../../../schemas/component.xsd"
+    >
+
+    <Info
+        title="Arcporter2"
+        author="BurstBiscuit"
+        description="Arcport anything, except for bread."
+        url="https://bitbucket.org/0x4D61696B/arcporter2"
+        uiVersion="1000"
+    />
+
+    <Events>
+        <Event name="MY_HARDCORE_TOGGLE"                    bind="OnMyHardcoreToggle" />
+        <Event name="MY_MATCHLIST_TOGGLE"                   bind="MatchList_Toggle" />
+        <Event name="MY_MATCHMAKER_MESSAGE_HANDLER"         bind="OnMyMessageHandler" />
+        <Event name="MY_MATCHMAKER_TOGGLE"                  bind="OnMatchmakerToggle" />
+        <Event name="MY_MATCH_QUEUE_RESPONSE"               bind="OnMatchQueueResponse" />
+        <Event name="ON_COMPONENT_LOAD"                     bind="OnComponentLoad" />
+        <Event name="ON_ENTER_ZONE"                         bind="OnEnterZone" />
+        <Event name="ON_LEVEL_CHANGED"                      bind="OnLevelChanged" />
+        <Event name="ON_MATCHLIST_TOGGLE"                   bind="MatchList_Toggle" />
+        <Event name="ON_MATCH_FORCE_UNQUEUE"                bind="OnMatchForceUnqueue" />
+        <Event name="ON_MATCH_QUEUE_RESPONSE"               bind="OnMatchQueueResponse" />
+        <Event name="ON_MATCH_QUEUE_UPDATE"                 bind="OnMatchQueueUpdate" />
+        <Event name="ON_MISSION_STATUS_UPDATE"              bind="OnMissionStatusUpdate" />
+        <Event name="ON_PLAYER_READY"                       bind="OnPlayerReady" />
+        <Event name="ON_PVP_CANCEL_QUEUE"                   bind="OnPvPCancel" />
+        <Event name="ON_PVP_TOGGLE"                         bind="OnPVPToggle" />
+        <Event name="ON_SQUAD_LEAVE"                        bind="OnSquadQueueEligibility" />
+        <Event name="ON_SQUAD_QUEUE_ELIGIBILITY_CHANGED"    bind="OnSquadQueueEligibility" />
+        <Event name="ON_SQUAD_ROSTER_UPDATE"                bind="OnSquadQueueEligibility" />
+    </Events>
+
+    <Textures>
+        <Texture name="arcporter" src="components/MainUI/Panels/Arcporter/textures/arcporter.png" premultiplied="false" >
+            <Region name="hardcore_bg" top="0" bottom="562" left="0" right="360" />
+        </Texture>
+
+        <Texture name="MissionPreview" src="components/MainUI/Panels/Arcporter/textures/missionpreview.png" premultiplied="false" minScale="1">
+            <Region name="Background" top="0" bottom="158" left="0" right="243" />
+            <Region name="Corner" top="160" bottom="165" left="0" right="5" />
+            <Region name="Corner_mh" top="160" bottom="165" left="5" right="0" />
+            <Region name="Corner_mv" top="165" bottom="160" left="0" right="5" />
+            <Region name="Corner_md" top="165" bottom="160" left="5" right="0" />
+        </Texture>
+
+        <Texture name="1163" src="components/MainUI/Panels/Arcporter/textures/1163.dds" premultiplied="false" minScale="1">
+            <Region name="01" top="1" bottom="221" left="405" right="805" />
+            <Region name="02" top="225" bottom="445" left="1" right="401" />
+            <Region name="03" top="1" bottom="221" left="1" right="401" />
+            <Region name="tbn" top="1" bottom="101" left="809" right="909" />
+        </Texture>
+        <Texture name="1049" src="components/MainUI/Panels/Arcporter/textures/1049.dds" premultiplied="false" minScale="1">
+            <Region name="01" top="449" bottom="669" left="1" right="401" />
+            <Region name="02" top="225" bottom="445" left="1" right="401" />
+            <Region name="03" top="1" bottom="221" left="1" right="401" />
+            <Region name="tbn" top="1" bottom="101" left="405" right="505" />
+        </Texture>
+        <Texture name="1030" src="components/MainUI/Panels/Arcporter/textures/1030.dds" premultiplied="false" minScale="1">
+            <Region name="01" top="449" bottom="669" left="1" right="401" />
+            <Region name="02" top="225" bottom="445" left="1" right="401" />
+            <Region name="03" top="1" bottom="221" left="1" right="401" />
+            <Region name="tbn" top="673" bottom="834" left="1" right="162" />
+        </Texture>
+        <Texture name="448" src="components/MainUI/Panels/Arcporter/textures/448.dds" premultiplied="false" minScale="1">
+            <Region name="01" top="449" bottom="669" left="1" right="401" />
+            <Region name="02" top="225" bottom="445" left="1" right="401" />
+            <Region name="03" top="1" bottom="221" left="1" right="401" />
+            <Region name="tbn" top="1" bottom="101" left="405" right="505" />
+        </Texture>
+        <Texture name="162" src="components/MainUI/Panels/Arcporter/textures/162.dds" premultiplied="false" minScale="1">
+            <Region name="01" top="449" bottom="669" left="1" right="401" />
+            <Region name="02" top="225" bottom="445" left="1" right="401" />
+            <Region name="03" top="1" bottom="221" left="1" right="401" />
+            <Region name="tbn" top="1" bottom="101" left="405" right="505" />
+        </Texture>
+        <Texture name="1107" src="components/MainUI/Panels/Arcporter/textures/1107.dds" premultiplied="false" minScale="1">
+            <Region name="01" top="449" bottom="669" left="1" right="401" />
+            <Region name="02" top="225" bottom="445" left="1" right="401" />
+            <Region name="03" top="1" bottom="221" left="1" right="401" />
+            <Region name="tbn" top="1" bottom="101" left="405" right="505" />
+        </Texture>
+        <Texture name="1093" src="components/MainUI/Panels/Arcporter/textures/1093.dds" premultiplied="false" minScale="1">
+            <Region name="01" top="323" bottom="480" left="1" right="295" />
+            <Region name="02" top="162" bottom="319" left="1" right="295" />
+            <Region name="03" top="1" bottom="158" left="1" right="295" />
+            <Region name="tbn" top="1" bottom="81" left="299" right="384" />
+        </Texture>
+        <Texture name="1069" src="components/MainUI/Panels/Arcporter/textures/1069.dds" premultiplied="false" minScale="1">
+            <Region name="01" top="489" bottom="729" left="1" right="401" />
+            <Region name="02" top="245" bottom="485" left="1" right="401" />
+            <Region name="03" top="1" bottom="241" left="1" right="401" />
+            <Region name="tbn" top="1" bottom="101" left="405" right="505" />
+        </Texture>
+        <Texture name="1054" src="components/MainUI/Panels/Arcporter/textures/1054.dds" premultiplied="false" minScale="1">
+            <Region name="01" top="449" bottom="669" left="1" right="401" />
+            <Region name="02" top="225" bottom="445" left="1" right="401" />
+            <Region name="03" top="1" bottom="221" left="1" right="401" />
+            <Region name="tbn" top="1" bottom="101" left="405" right="505" />
+        </Texture>
+        <Texture name="1051" src="components/MainUI/Panels/Arcporter/textures/1051.dds" premultiplied="false" minScale="1">
+            <Region name="01" top="449" bottom="669" left="1" right="401" />
+            <Region name="02" top="225" bottom="445" left="1" right="401" />
+            <Region name="03" top="1" bottom="221" left="1" right="401" />
+            <Region name="tbn" top="1" bottom="101" left="405" right="505" />
+        </Texture>
+        <Texture name="1028" src="components/MainUI/Panels/Arcporter/textures/1028.dds" premultiplied="false" minScale="1">
+            <Region name="01" top="489" bottom="729" left="1" right="401" />
+            <Region name="02" top="245" bottom="485" left="1" right="401" />
+            <Region name="03" top="1" bottom="241" left="1" right="401" />
+            <Region name="tbn" top="1" bottom="101" left="405" right="505" />
+        </Texture>
+        <Texture name="1022" src="components/MainUI/Panels/Arcporter/textures/1022.dds" premultiplied="false" minScale="1">
+            <Region name="01" top="449" bottom="669" left="1" right="401" />
+            <Region name="02" top="225" bottom="445" left="1" right="401" />
+            <Region name="03" top="1" bottom="221" left="1" right="401" />
+            <Region name="tbn" top="1" bottom="101" left="405" right="505" />
+        </Texture>
+        <Texture name="1007" src="components/MainUI/Panels/Arcporter/textures/1007.dds" premultiplied="false" minScale="1">
+            <Region name="01" top="449" bottom="669" left="1" right="401" />
+            <Region name="02" top="225" bottom="445" left="1" right="401" />
+            <Region name="03" top="1" bottom="221" left="1" right="401" />
+            <Region name="tbn" top="1" bottom="101" left="405" right="505" />
+        </Texture>
+        <Texture name="1003" src="components/MainUI/Panels/Arcporter/textures/1003.dds" premultiplied="false" minScale="1">
+            <Region name="01" top="449" bottom="669" left="1" right="401" />
+            <Region name="02" top="225" bottom="445" left="1" right="401" />
+            <Region name="03" top="1" bottom="221" left="1" right="401" />
+            <Region name="tbn" top="1" bottom="101" left="405" right="505" />
+        </Texture>
+        <Texture name="864" src="components/MainUI/Panels/Arcporter/textures/864.dds" premultiplied="false" minScale="1">
+            <Region name="01" top="449" bottom="669" left="1" right="401" />
+            <Region name="02" top="225" bottom="445" left="1" right="401" />
+            <Region name="03" top="1" bottom="221" left="1" right="401" />
+            <Region name="tbn" top="1" bottom="101" left="405" right="505" />
+        </Texture>
+        <Texture name="863" src="components/MainUI/Panels/Arcporter/textures/863.dds" premultiplied="false" minScale="1">
+            <Region name="01" top="1189" bottom="1779" left="1" right="1025" />
+            <Region name="02" top="595" bottom="1185" left="1" right="1025" />
+            <Region name="03" top="1" bottom="591" left="1" right="1025" />
+            <Region name="tbn" top="1783" bottom="1883" left="1" right="101" />
+        </Texture>
+        <Texture name="861" src="components/MainUI/Panels/Arcporter/textures/861.dds" premultiplied="false" minScale="1">
+            <Region name="01" top="449" bottom="669" left="1" right="401" />
+            <Region name="02" top="225" bottom="445" left="1" right="401" />
+            <Region name="03" top="1" bottom="221" left="1" right="401" />
+            <Region name="tbn" top="1" bottom="101" left="405" right="505" />
+        </Texture>
+        <Texture name="844" src="components/MainUI/Panels/Arcporter/textures/844.dds" premultiplied="false" minScale="1">
+            <Region name="01" top="489" bottom="729" left="1" right="401" />
+            <Region name="02" top="245" bottom="485" left="1" right="401" />
+            <Region name="03" top="1" bottom="241" left="1" right="401" />
+            <Region name="tbn" top="1" bottom="101" left="405" right="505" />
+        </Texture>
+        <Texture name="833" src="components/MainUI/Panels/Arcporter/textures/833.dds" premultiplied="false" minScale="1">
+            <Region name="01" top="449" bottom="669" left="1" right="401" />
+            <Region name="02" top="225" bottom="445" left="1" right="401" />
+            <Region name="03" top="1" bottom="221" left="1" right="401" />
+            <Region name="tbn" top="1" bottom="101" left="405" right="505" />
+        </Texture>
+        <Texture name="658" src="components/MainUI/Panels/Arcporter/Textures/658.dds" premultiplied="false" minScale="1">
+            <Region name="01" top="489" bottom="729" left="1" right="401" />
+            <Region name="02" top="245" bottom="485" left="1" right="401" />
+            <Region name="03" top="1" bottom="241" left="1" right="401" />
+            <Region name="tbn" top="1" bottom="101" left="405" right="505" />
+        </Texture>
+        <Texture name="1008" src="components/MainUI/Panels/Arcporter/textures/1008.dds" premultiplied="false" minScale="1">
+            <Region name="01" top="449" bottom="669" left="1" right="401" />
+            <Region name="02" top="225" bottom="445" left="1" right="401" />
+            <Region name="03" top="1" bottom="221" left="1" right="401" />
+            <Region name="tbn" top="1" bottom="101" left="405" right="505" />
+        </Texture>
+        <Texture name="1155" src="components/MainUI/Panels/Arcporter/textures/1155.dds" premultiplied="false" minScale="1">
+            <Region name="01" top="449" bottom="669" left="1" right="401" />
+            <Region name="02" top="225" bottom="445" left="1" right="401" />
+            <Region name="03" top="1" bottom="221" left="1" right="401" />
+            <Region name="tbn" top="1" bottom="101" left="405" right="505" />
+        </Texture>
+        <Texture name="1089" src="components/MainUI/Panels/Arcporter/textures/1089.dds" premultiplied="false" minScale="1">
+            <Region name="01" top="323" bottom="480" left="1" right="295" />
+            <Region name="02" top="162" bottom="319" left="1" right="295" />
+            <Region name="03" top="1" bottom="158" left="1" right="295" />
+            <Region name="tbn" top="1" bottom="81" left="299" right="384" />
+        </Texture>
+    </Textures>
+
+    <Colors>
+        <Color name="plate" value="#CCCCCC"/>
+    </Colors>
+
+    <Styles>
+        <StyleSheet name="plate_header">
+            font:UbuntuMedium_10;
+            halign:left;
+            valign:top;
+            color:orange;
+        </StyleSheet>
+        <StyleSheet name="plate_detail">
+            font:UbuntuMedium_10;
+            halign:left;
+            valign:top;
+            color:plate;
+        </StyleSheet>
+        <StyleSheet name="plate_center_small">
+            font:UbuntuMedium_9;
+            halign:center;
+            valign:center;
+            color:plate
+        </StyleSheet>
+        <StyleSheet name="plate_grey">
+            font:UbuntuMedium_9;
+            halign:left;
+            valign:center;
+            color:#545252
+        </StyleSheet>
+        <StyleSheet name="req_reason">
+            font:UbuntuMedium_9;
+            halign:left;
+            valign:center;
+            color:#FFFFFF;
+        </StyleSheet>
+        <StyleSheet name="req_names">
+            font:UbuntuMedium_9;
+            halign:left;
+            valign:center;
+            color:squad
+        </StyleSheet>
+    </Styles>
+
+    <BluePrints>
+        <BluePrint name="seperator" instantiable="true">
+            <StillArt dimensions="top:0; bottom:100%; left:0; right:50%" style="texture:gradients; region:white_right;"/>
+            <StillArt dimensions="top:0; bottom:100%; left:50%; right:100%" style="texture:gradients; region:white_left;"/>
+        </BluePrint>
+
+        <BluePrint name="instanceplate" instantiable="true">
+            <StillArt dimensions="dock:fill" style="texture:colors; region:white; tint:#000000; alpha:0.9" />
+            <StillArt name="typebar" dimensions="left:0; right:8; top:0; bottom:100%;" style="texture:colors; region:white;" />
+            <Border name="highlight" dimensions="left:9; right:100%; top:0; bottom:100%;" class="Highlight" style="padding:48; alpha:0" />
+            <Group name="thumbnail" dimensions="left:16; top:6; height:80; width:85">
+                <Border dimensions="left:0; top:0; height:79; width:79;" class="RoundedBorders" style="padding:3; tint:#000000; alpha:1;" />
+                <Group name="icon" dimensions="left:2; top:2; height:73; width:73"/>
+                <Group name="queued" dimensions="left:2; bottom:100%-5; height:20; width:73;" style="alpha:0" >
+                    <StillArt dimensions="dock:fill" style="texture:colors; region:white; tint:#00FF00; alpha:0.5" />
+                    <Text key="QUEUED" dimensions="dock:fill" class="font:UbuntuMedium_10" />
+                </Group>
+                <StillArt name="check" dimensions="top:0; right:100%; height:23; width:23;" style="texture:icons_arcporter; region:check; alpha:0" />
+            </Group>
+            <ListLayout name="info" dimensions="left:105; right:100%; top:6; bottom:100%;" style="vpadding:2">
+                <Text name="name" key="QUEUE_NAME" dimensions="top:0; left:0; width:100%; height:18" class="plate_header" />
+                <Text name="subtext" dimensions="top:0; left:0; width:100%; height:18" class="plate_detail" />
+                <ListLayout name="detail" dimensions="top:0; left:0; width:100%; height:18" style="horizontal:true; hpadding:5">
+                    <Text name="req" key="Required" dimensions="top:0; left:0; width:60; height:100%" class="plate_grey" />
+                    <Group name="level_min" dimensions="left:0; top:0; height:100%; width:50" >
+                        <Border dimensions="dock:fill" class="PanelSubBackDrop" style="padding:3; tint:#1F2022; alpha:1"/>
+                        <Text name="label" dimensions="top:0; left:0; width:100%; height:100%" class="plate_center_small" />
+                    </Group>
+                    <Group name="player_count" dimensions="left:0; top:0; height:100%; width:115" >
+                        <Border dimensions="dock:fill" class="PanelSubBackDrop" style="padding:3; tint:#1F2022; alpha:1"/>
+                        <Text name="label" dimensions="top:0; left:0; width:100%; height:100%" class="plate_center_small" />
+                    </Group>
+                </ListLayout>
+                <ListLayout name="sov_detail" dimensions="top:0; left:0; width:100%; height:18" style="horizontal:true; hpadding:5; visible:false">
+                    <Text name="sov" key="SOVEREIGNTY" dimensions="top:0; left:0; width:80; height:100%" class="plate_grey" />
+                    <Group name="sov_owner" dimensions="left:0; top:0; height:100%; width:50" >
+                        <Border dimensions="dock:fill" class="PanelSubBackDrop" style="padding:3; tint:#1F2022; alpha:1"/>
+                        <Text name="label" dimensions="top:0; left:0; width:100%; height:100%" class="plate_center_small" />
+                    </Group>
+                </ListLayout>
+                <ListLayout name="daily_completion" dimensions="top:0; left:0; width:100%; height:18" style="horizontal:true; hpadding:2; visible:false">
+                    <Group dimensions="top:0; left:0; width:18; height:100%;">
+                        <StillArt dimensions="right:100%; center-y:50%; width:13; height:10" style="texture:check_icon;"/>
+                    </Group>
+                    <Text key="DAILY_COMPLETED_TODAY" dimensions="top:0; left:0; width:100%; height:100%" class="plate_grey"/>
+                </ListLayout>
+            </ListLayout>
+
+            <FocusBox name="FocusBox" dimensions="dock:fill" class="ui_button" />
+        </BluePrint>
+        <BluePrint name="req_tooltip" instantiable="true">
+            <ListLayout name="reason_list" dimensions="top:0; left:0; height:100%; width:100%" style="hpadding:8; vpadding:0">
+                <Group name="hardcore_req" dimensions="top:0; left:0; width:100%; height:20">
+                    <Text name="reason" dimensions="dock:fill" key="ARC_REQ_NO_HARDCORE" class="req_reason"/>
+                </Group>
+                <Group name="challenge_req" dimensions="top:0; left:0; width:100%; height:20">
+                    <Text name="reason" dimensions="dock:fill" key="ARC_REQ_NO_CHALLENGE" class="req_reason"/>
+                </Group>
+                <Group name="group_req" dimensions="top:0; left:0; width:100%; height:20">
+                    <Text name="reason" dimensions="dock:fill" key="ARC_REQ_GROUP_SIZE" class="req_reason"/>
+                </Group>
+                <ListLayout name="level_req" dimensions="top:0; left:0; width:10; height:40" style="vpadding:6; hpadding:6">
+                    <Text name="reason" dimensions="top:0; left:0; width:100%; height:20" key="ARC_REQ_LEVEL" class="req_reason"/>
+                    <Text name="names" dimensions="top:0; left:0; width:100%; height:20" class="req_names" key="{PlayerName, PlayerName, PlayerName, PlayerName}"/>
+                </ListLayout>
+                <ListLayout name="cert_req" dimensions="top:0; left:0; width:10; height:40" style="vpadding:6; hpadding:6">
+                    <Text name="reason" dimensions="top:0; left:0; width:100%; height:20" key="ARC_REQ_CERT" class="req_reason"/>
+                    <Text name="names" dimensions="top:0; left:0; width:100%; height:20" class="req_names" key="{PlayerName, PlayerName, PlayerName, PlayerName, PlayerName}"/>
+                </ListLayout>
+            </ListLayout>
+        </BluePrint>
+    </BluePrints>
+
+    <Frames>
+        <WindowFrame name="main" dimensions="center-x:50%; center-y:50%; height:650; width:829" visible="false" depth="0" key="ARCPORTER" style="movable:true"><!-- PanelLayer3 -->
+            <Children>
+                <Group id="window" dimensions="dock:fill" style="alpha:1">
+                    <!-- Body -->
+                    <Group dimensions="left:0; top:0; bottom:100%; right:100%" >
+                        <!-- Fosterable Group -->
+                        <Group id="queue_page" dimensions="dock:fill">
+                            <!-- Header & Tabs -->
+                            <Group dimensions="left:1; right:100%-1; top:1; height:45">
+                                <Group id="tabs" dimensions="dock:fill" />
+                            </Group>
+                            <Text id="choose_label" key="CHOOSE_INSTANCE" dimensions="left:25; top:1; width:100%-25; height:65" style="font:Demi_25; halign:left; valign:center; visible:false"/>
+                            <!-- Header & Tabs -->
+
+                            <!-- Body -->
+                            <Group dimensions="left:1; right:100%-1; top:23; bottom:100%-1;" >
+                                <Group id="no_instance_label" dimensions="left:0; width:100%; height:65; center-y:50%">
+                                    <Text  dimensions="left:0; top:0; width:100%; height:32" key="NO_INSTANCES" style="font:Demi_25; halign:center; valign:top; visible:true"/>
+                                    <Text dimensions="left:0; top:42; height:11; width:100%" key="INSTANCE_AVAILABILTY" style="font:Demi_11; halign:center; valign:bottom; visible:true"/>
+                                </Group>
+                                <RadioGroup id="diff_radio_group" dimensions="left:20; width:200; height:16; top:75;">
+                                    <ListLayout dimensions="dock:fill" style="horizontal:true; hpadding:15;">
+                                        <RadioButton id="radio_normal" dimensions="center-y:50%; left:0; height:16; width:16" key="DIFFICULTY_NORMAL" style="font:Demi_10;"/>
+                                        <RadioButton id="radio_challenge" dimensions="center-y:50%; left:250; height:16; width:16" key="DIFFICULTY_CHALLENGE" style="font:Demi_10;"/>
+                                        <RadioButton id="radio_hard" dimensions="center-y:50%; left:100; height:16; width:16" key="DIFFICULTY_HARD" style="font:Demi_10;"/>
+                                    </ListLayout>
+                                </RadioGroup>
+
+                                <!-- Instance / Zone Listing -->
+                                <Group id="listing" dimensions="left:0; top:102; bottom:100%-2; width:465"/>
+                                <!-- Instance / Zone Listing -->
+
+
+                                <StillArt id="hardcore_background" dimensions="bottom:100%; right:100%; height:562; width:360;" style="texture:arcporter; region:hardcore_bg; alpha:0" />
+                                <Group dimensions="right:100%-2; top:0; bottom:100%-2; width:360" >
+                                    <Group id="queue_detail" dimensions="dock:fill" style="alpha:0" >
+                                        <Text id="queue_label" key="{Words Words Words Words A Long Word, yo!}" dimensions="top:0; left:0; width:100%; height:85" style="font:UbuntuMedium_13; halign:center; valign:bottom; color:orange; wrap:true" />
+
+                                        <!-- Thumbnail Large -->
+                                        <Group dimensions="center-x:50%; top:102; width:296; aspect:1.8654">
+                                            <Group id="detailscreenshot" dimensions="left:1; right:100%-1; top:1; bottom:100%-1" />
+                                            <Border dimensions="dock:fill" class="ButtonBorder" style="alpha:0.15; exposure:1.0; padding:2"/>
+                                        </Group>
+                                        <!-- Thumbnail Large -->
+
+                                        <!-- Selectable Thumbnails -->
+                                        <Group id="thumbnails" dimensions="center-x:50%; top:263; height:54; width:296;" />
+                                        <!-- Selectable Thumbnails -->
+
+                                        <Group dimensions="left:0; right:100%; bottom:100%-243; height:1" blueprint="seperator" style="alpha:0.3" />
+
+                                        <!-- Additional Lore -->
+                                        <Group dimensions="dock:fill" style="visible:false">
+                                            <Text id="detail_text" dimensions="left:0; top:0; bottom:100%; width:100%;" style="font:UbuntuRegular_9; halign:left; valign:top; wrap:true;"/>
+                                        </Group>
+                                        <Group dimensions="left:10%; right:90%; top:100%-243; bottom:100%-111;">
+                                            <Group id="detail_scroller"  dimensions="left:5; right:100%-5; top:5; bottom:100%-5" />
+                                        </Group>
+                                        <!-- Additional Lore -->
+
+                                        <Group dimensions="left:0; right:100%; top:100%-111; height:1" blueprint="seperator" style="alpha:0.3" />
+                                        <FocusBox name="daily_focus" dimensions="top:100%-105; center-x:50%-13; width:100%; height:20"/>
+                                        <ListLayout name="daily_completion" dimensions="top:100%-105; center-x:50%-13; width:100%; height:20" style="horizontal:true; hpadding:2;">
+                                            <Group name="icon_grp" dimensions="top:0; left:0; width:13; height:100%;">
+                                                <StillArt name="icon" dimensions="right:100%; center-y:50%; width:13; height:10" style="texture:check_icon; eatsmice:false;"/>
+                                            </Group>
+                                            <Text name="label" key="DAILY_COMPLETED_TODAY" dimensions="top:0; left:0; width:100%; height:100%;" style="font:Demi_10; color:55AA55;"/>
+                                        </ListLayout>
+                                        <!-- Instance Queue -->
+                                        <Group id="queue_container" dimensions="center-x:50%; width:100%; height:65; bottom:100%" >
+
+                                            <!-- Queue Button & Feedback -->
+                                            <Group id="queue_group" dimensions="center-x:50%; width:90%; height:45; bottom:100%-36"/>
+                                            <!-- Queue Button & Feedback -->
+                                        </Group>
+                                        <!-- Instance Queue -->
+
+                                        <!-- World Travel -->
+                                        <Group id="travel_container" dimensions="center-x:50%; width:100%; height:65; bottom:100%" >
+                                            <!-- Travel Button -->
+                                            <!--<Group id="travel_group" dimensions="center-x:50%; width:90%; height:45; bottom:100%-36"/>-->
+                                            <Button id="travel_group" dimensions="center-x:50%; width:90%; height:45; bottom:100%-36" style="font:Demi_13;" key="TRAVEL"/>
+                                            <!-- Travel Button -->
+                                        </Group>
+                                        <!-- World Travel -->
+                                    </Group>
+                                </Group>
+                            </Group>
+                        </Group>
+                        <!-- Fosterable Group -->
+                    </Group>
+                    <!-- Body -->
+
+                    <!-- Foster Container -->
+                    <Group id="foster_container" dimensions="dock:fill" style="visible:false" />
+                    <!-- Foster Container -->
+                </Group>
+            </Children>
+            <OnOpen bind="OnOpen" />
+            <OnClose bind="OnClose" />
+            <OnEscape bind="OnEscape" />
+        </WindowFrame>
+    </Frames>
+</Component>
