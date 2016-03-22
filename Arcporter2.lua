@@ -12,7 +12,6 @@ require "lib/lib_Callback2"
 require "lib/lib_Colors"
 require "lib/lib_Debug"
 require "lib/lib_PanelManager"
-require "lib/lib_QueueButton"
 require "lib/lib_RowChoice"
 require "lib/lib_RowScroller"
 require "lib/lib_Spinner"
@@ -25,6 +24,7 @@ require "lib/lib_WebCache"
 require "lib/lib_math"
 require "lib/lib_table"
 
+require "./lib/lib_QueueButton"
 
 Debug.EnableLogging(false)
 
@@ -123,9 +123,9 @@ local c_TerminalTypeIds = {
 }
 
 local c_ValidType = {
-    [TYPE_TRANSFER]         = CAT_TRAVEL,	-- Zone change
-    [TYPE_MATCHMAKER_PVE]   = true,     	-- Group PVE
-    [TYPE_MATCHMAKER_PVP]   = true,     	-- Group PVP
+    [TYPE_TRANSFER]         = CAT_TRAVEL,   -- Zone change
+    [TYPE_MATCHMAKER_PVE]   = true,         -- Group PVE
+    [TYPE_MATCHMAKER_PVP]   = true,         -- Group PVP
     [TYPE_ARCFOLDER]        = CAT_TRAVEL,   -- Arcporter
 }
 
@@ -235,7 +235,7 @@ function OnComponentLoad()
         System.PlaySound(SOUND_CONFIRM)
         -- Needs proper error handling
         if not success then
-            error("Failed to transfer to ZoneId: "..tostring(g_SelectedIP.zone_id))
+            Debug.Error("Failed to transfer to ZoneId: "..tostring(g_SelectedIP.zone_id))
         end
     end)
 
@@ -399,6 +399,14 @@ function OnMatchQueueUpdate(args)
     g_QueueData = Game.GetPvPQueue()
     RefreshAll_InstancePlates()
     QUEUEBUTTON:OnEvent(args)
+
+    if (args.foundMatch) then
+        local matchData = Game.GetFoundMatch()
+
+        if (matchData and matchData.state == "Launching") then
+            OnClose()
+        end
+    end
 end
 
 function OnMatchForceUnqueue(args)
@@ -949,19 +957,18 @@ function InstancePlate_Refresh(IP)
             InstancePlate_Disable(IP)
         else
             local inqueue = QUEUEBUTTON:IsInQueue()
-            local inopenworld = QUEUEBUTTON:IsOpenWorld()
             local isleader = IsPlayerGroupLeader()
             local isgroupvalid = IsGroupValidSize(unpack(IP.groupsize))
             local israidinvalid = IP.is_raid and not Platoon.IsInPlatoon()
             local atlevel = g_PlayerLevel >= IP.difficulty[g_Difficulty].min_level
             local isenabled = false
 
-            if not inopenworld or not atlevel then
+            if not atlevel then
                 InstancePlate_Disable(IP)
             elseif inqueue then
                 InstancePlate_Disable(IP)
                 canSkip = true
-            elseif isleader and inopenworld and not inqueue and ( israidvalid or isgroupvalid ) then
+            elseif isleader and not inqueue and ( israidvalid or isgroupvalid ) then
                 InstancePlate_Enable(IP)
             end
         end
@@ -979,14 +986,14 @@ function InstancePlate_Select(IP, state)
     if state then
         g_SelectedIP = IP
     end
-    if g_WorldTravel and state then
+    if g_WorldTravel and state and isequal(unicode.lower(Game.GetZoneInfo(Game.GetZoneId()).zone_type), "openworld") then
         if not TRAVEL_BUTTON:IsEnabled() then
             TRAVEL_BUTTON:Enable()
         end
     end
     IP.selected = state
     InstancePlate_SelectDetail(IP, state)
-    if IP.selected and IP.enabled then
+    if IP.selected then
         if not g_WorldTravel then
             local difficulty = IP.difficulty[g_Difficulty]
             if difficulty then
@@ -1353,37 +1360,37 @@ end
 
 function RefreshAvailableWorldAreas()
     local locations = Game.GetGlobeViewLocations()
-	
+
     for k, locInfo in ipairs(locations) do
-		local formatted_loc = {
-			id = 0,
-			zone_id = tonumber(locInfo.zoneId),
-			name = locInfo.name,
-			description = locInfo.desc,
-			sub_title = locInfo.climate,
-			sovereignty = locInfo.sovereignty,
+        local formatted_loc = {
+            id = 0,
+            zone_id = tonumber(locInfo.zoneId),
+            name = locInfo.name,
+            description = locInfo.desc,
+            sub_title = locInfo.climate,
+            sovereignty = locInfo.sovereignty,
 
-			category_id = CAT_TRAVEL,
-			gametype = "travel",
+            category_id = CAT_TRAVEL,
+            gametype = "travel",
 
-			min_players_per_team = 1,
-			max_players_per_team = 1,
+            min_players_per_team = 1,
+            max_players_per_team = 1,
 
-			difficulty_levels = {},
+            difficulty_levels = {},
 
-			min_level = locInfo.level_min,
+            min_level = locInfo.level_min,
 
-			-- TEMP
-			images = {
-				thumbnail = ReturnNonEmptyString(locInfo.thumbnail[1], "/assets/zones/placeholder-tbn.png"),
-				screenshot = {
-					ReturnNonEmptyString(locInfo.screenshot[1], "/assets/zones/placeholder-ss.png"),
-					ReturnNonEmptyString(locInfo.screenshot[2], "/assets/zones/placeholder-ss.png"),
-					ReturnNonEmptyString(locInfo.screenshot[3], "/assets/zones/placeholder-ss.png"),
-				}
-			},
-		}
-		table.insert(g_ZoneListing[CAT_TRAVEL], formatted_loc)
+            -- TEMP
+            images = {
+                thumbnail = ReturnNonEmptyString(locInfo.thumbnail[1], "/assets/zones/placeholder-tbn.png"),
+                screenshot = {
+                    ReturnNonEmptyString(locInfo.screenshot[1], "/assets/zones/placeholder-ss.png"),
+                    ReturnNonEmptyString(locInfo.screenshot[2], "/assets/zones/placeholder-ss.png"),
+                    ReturnNonEmptyString(locInfo.screenshot[3], "/assets/zones/placeholder-ss.png"),
+                }
+            },
+        }
+        table.insert(g_ZoneListing[CAT_TRAVEL], formatted_loc)
     end
 end
 
@@ -1453,12 +1460,12 @@ end
 
 
 function DebugLogPlateValues(IP)
-	Debug.Divider()
-	Debug.Log(IP.name)
-	
-	for k, v in pairs(IP) do
-		if type(v) == "boolean" or type(v) == "number" or type(v) == "string" then
-			Debug.Log(k .. " = " .. tostring(v))
-		end
-	end
+    Debug.Divider()
+    Debug.Log(IP.name)
+
+    for k, v in pairs(IP) do
+        if type(v) == "boolean" or type(v) == "number" or type(v) == "string" then
+            Debug.Log(k .. " = " .. tostring(v))
+        end
+    end
 end
