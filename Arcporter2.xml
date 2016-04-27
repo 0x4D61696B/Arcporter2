@@ -186,6 +186,18 @@
             <Region name="03" top="1" bottom="158" left="1" right="295" />
             <Region name="tbn" top="1" bottom="81" left="299" right="384" />
         </Texture>
+        <Texture name="1173" src="components/MainUI/Panels/Arcporter/textures/1173.dds" premultiplied="false" minScale="1">
+            <Region name="01" top="323" bottom="477" left="1" right="292" />
+            <Region name="02" top="162" bottom="316" left="1" right="292" />
+            <Region name="03" top="1" bottom="156" left="1" right="292" />
+            <Region name="tbn" top="1" bottom="79" left="295" right="379" />
+        </Texture>
+        <Texture name="1181" src="components/MainUI/Panels/Arcporter/textures/1181.dds" premultiplied="false" minScale="1">
+            <Region name="01" top="323" bottom="477" left="1" right="292" />
+            <Region name="02" top="162" bottom="316" left="1" right="292" />
+            <Region name="03" top="1" bottom="156" left="1" right="292" />
+            <Region name="tbn" top="1" bottom="79" left="295" right="379" />
+        </Texture>
     </Textures>
 
     <Colors>
